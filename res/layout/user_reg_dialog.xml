@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_reg_v01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- 姓名 -->
+
+    <LinearLayout
+        android:id="@+id/user_reg_v01_h01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="姓         名:" />
+
+        <EditText
+            android:id="@+id/user_reg_EditText_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="请输入姓名"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/parting_line_margin"
+        android:layout_marginTop="@dimen/parting_line_margin"
+        android:background="?android:attr/listDivider" />
+
+    <!-- 手机号 -->
+
+    <LinearLayout
+        android:id="@+id/user_reg_v01_h02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="手机号码:" />
+
+        <EditText
+            android:id="@+id/user_reg_EditText_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="请输入号码"
+            android:inputType="phone" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/parting_line_margin"
+        android:layout_marginTop="@dimen/parting_line_margin"
+        android:background="?android:attr/listDivider" />
+
+    <!-- 医院 -->
+
+    <LinearLayout
+        android:id="@+id/user_reg_v01_h03"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="护理单位:" />
+
+        <EditText
+            android:id="@+id/user_reg_EditText_hospital"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="请输入名称"
+            android:inputType="text" />
+    </LinearLayout>
+
+</LinearLayout>

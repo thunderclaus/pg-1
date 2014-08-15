@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/info_scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
+
+        <!-- 第一列 logo -->
+
+        <LinearLayout
+            android:id="@+id/info_LinearLayout_01"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/activity_vertical_margin" >
+
+            <ImageView
+                android:id="@+id/info_imageView_pku"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pku" />
+
+            <LinearLayout
+                android:id="@+id/info_LinearLayout_01_01v"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:text="注册信息" />
+
+                <TextView
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center|top"
+                    android:text="Wet Alert" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/parting_line_margin"
+            android:layout_marginTop="@dimen/parting_line_margin"
+            android:background="?android:attr/listDivider" />
+        <!-- 第二列 注册使用者 -->
+
+        <LinearLayout
+            android:id="@+id/info_LinearLayout_02"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <!-- 更换设备 -->
+
+            <LinearLayout
+                android:id="@+id/info_LinearLayout_02_01h"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.2"
+                    android:gravity="center"
+                    android:text="注 册 设 备" />
+
+                <Button
+                    android:id="@+id/info_btn_DeviceChanging"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:background="@color/green"
+                    android:gravity="center"
+                    android:text="更换设备"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/parting_line_margin"
+                android:layout_marginTop="@dimen/parting_line_margin"
+                android:background="?android:attr/listDivider" />
+
+            <!-- 序列号 -->
+
+            <LinearLayout
+                android:id="@+id/info_LinearLayout_02_02h"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="序  列  号:" />
+
+                <EditText
+                    android:id="@+id/info_textview_MacAddrss"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:gravity="left"
+                    android:hint="当前无设备"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/info_btn_MacCheck"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:background="@color/green"
+                    android:gravity="center"
+                    android:text="检测设备"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/parting_line_margin"
+                android:layout_marginTop="@dimen/parting_line_margin"
+                android:background="?android:attr/listDivider" />
+
+            <!-- 用户信息 -->
+            <!-- 用户名 -->
+
+            <LinearLayout
+                android:id="@+id/info_LinearLayout_02_03h"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/info_LinearLayout_02_03h_01v"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="用  户  名 :" />
+
+                    <TextView
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="绑定手机 :" />
+
+                    <TextView
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="看护单位 :" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/info_LinearLayout_02_03h_02v"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/info_textview_UserName"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center|left" />
+
+                    <TextView
+                        android:id="@+id/info_textview_UserPhone"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center|left" />
+
+                    <TextView
+                        android:id="@+id/info_textview_UserHospital"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center|left" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/info_LinearLayout_02_03h_03v"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8"
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:id="@+id/info_btn_UserChange"
+                        style="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/green"
+                        android:gravity="center"
+                        android:text="更换用户"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/parting_line_margin"
+            android:layout_marginTop="@dimen/parting_line_margin"
+            android:background="?android:attr/listDivider" />
+
+        <!-- 第三列注册看护者 -->
+
+        <LinearLayout
+            android:id="@+id/info_linear_listNurses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/info_LinearLayout_03_01h"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.2"
+                    android:gravity="center"
+                    android:text="添 加 护 士" />
+
+                <ImageView
+                    android:id="@+id/info_imageview_AddNurses"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="0.8"
+                    android:gravity="right"
+                    android:src="@drawable/add" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/parting_line_margin"
+                android:background="?android:attr/listDivider" />
+
+            <!-- 看护者listView -->
+
+            <com.pku.pg.ListViewForScrollView
+                android:id="@+id/info_list_Nurses"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/parting_line_margin"
+                android:background="?android:attr/listDivider" />
+        </LinearLayout>
+
+        <!-- 第四列注册亲属 -->
+
+        <LinearLayout
+            android:id="@+id/info_linear_listRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/info_LinearLayout_04_01h"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.2"
+                    android:gravity="center"
+                    android:text="添 加 亲 友" />
+
+                <ImageView
+                    android:id="@+id/info_imageview_AddRelative"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="0.8"
+                    android:gravity="right"
+                    android:src="@drawable/add" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/parting_line_margin"
+                android:background="?android:attr/listDivider" />
+
+            <!-- 亲属listView -->
+
+            <com.pku.pg.ListViewForScrollView
+                android:id="@+id/info_list_Relatives"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/parting_line_margin"
+                android:background="?android:attr/listDivider" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提交"
+            android:layout_gravity="center"
+            android:id="@+id/commit" />
+    </LinearLayout>
+    <!-- 最外层 -->
+
+</ScrollView>
