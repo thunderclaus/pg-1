@@ -130,7 +130,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="left"
-                    android:hint="当前无设备"
                     android:inputType="text" />
 
                 <Button

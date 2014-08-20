@@ -19,14 +19,10 @@ public class BtService extends Service{
 	public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStart(intent, startId);
         Bundle bundle = intent.getExtras();
-        String userName = bundle.getString("userName");
         String deviceID = bundle.getString("deviceID");
-        String nurseTel = bundle.getString("nurseTel");
-        String relativesTel = bundle.getString("relativesTel");
-        String userTel = bundle.getString("userTel");
         if(bluetoothManager!=null)
 			bluetoothManager.setConnectting(false);
-		bluetoothManager = new BluetoothManager(deviceID,userName,nurseTel,relativesTel,userTel);
+		bluetoothManager = new BluetoothManager(deviceID);
 		Thread thread = new Thread(bluetoothManager);
 		thread.start();
         return START_REDELIVER_INTENT;

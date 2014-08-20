@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="看  护  人: " />
+            android:text="看  护  人"/>
 
         <TextView
             style="?android:attr/textAppearanceMedium"
@@ -37,14 +37,14 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/item_title_Nurse"
+            android:id="@+id/item_title_nurse"
             style="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center|left" />
 
         <TextView
-            android:id="@+id/item_info_Nurse"
+            android:id="@+id/item_info_nurse"
             style="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,16 +52,15 @@
     </LinearLayout>
 
     <CheckBox
-        android:id="@+id/item_checkbox_Nurse"
+        android:id="@+id/item_checkbox_nurse"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center|right"
         android:gravity="right"
         android:layout_weight="0.8"
-        android:clickable="true"
         android:focusable="false"
         android:focusableInTouchMode="false" 
-  
+        android:clickable="false"
         />
 
    

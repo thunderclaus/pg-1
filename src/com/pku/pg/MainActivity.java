@@ -16,7 +16,6 @@ public class MainActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		System.out.println("一只土鳖爬上岸");
 		enterBtn = (ImageView)findViewById(R.id.imageView_enter_Main);
 		enterBtn.setOnClickListener(this);
 	}
