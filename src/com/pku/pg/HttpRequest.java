@@ -82,7 +82,6 @@ public class HttpRequest {
 			}
 			sb.deleteCharAt(sb.length()-1);
 		}
-		System.out.println("111111111111111111");
 		byte[] entitydata = sb.toString().getBytes();//得到实体的二进制数据
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -90,7 +89,6 @@ public class HttpRequest {
 		conn.setConnectTimeout(10 * 1000);
 		conn.setUseCaches(false);
 		conn.setDoOutput(true);//如果通过post提交数据，必须设置允许对外输出数据
-		System.out.println("222222222222222222222");
 		
 		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		conn.setRequestProperty("Content-Length", String.valueOf(entitydata.length));
@@ -98,7 +96,6 @@ public class HttpRequest {
 		outStream.write(entitydata);
 		outStream.flush();
 		outStream.close();
-		System.out.println("3333333333333333333333");
 		if(conn.getResponseCode()==200){
 			HttpURLConnection conn1 = (HttpURLConnection)url.openConnection();
 			conn1.setRequestMethod("GET");

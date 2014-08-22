@@ -39,7 +39,7 @@ public class RegisterRelativesThread extends Thread{
 					
 					
 				}
-			}else System.out.println("×¢²áÇ×ÊôÊ§°Ü");
+			}else MainActivity.SendMessage(MainActivity.handler, 6);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

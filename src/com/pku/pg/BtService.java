@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class BtService extends Service{
-	private BluetoothManager bluetoothManager = null;
+	static BluetoothManager bluetoothManager = null;
 
 	@Override
 	public IBinder onBind(Intent intent) {

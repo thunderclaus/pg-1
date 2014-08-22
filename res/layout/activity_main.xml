@@ -172,15 +172,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?android:attr/textAppearanceMedium"
-                    android:text="2014-7-12" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    style="?android:attr/textAppearanceMedium"
-                    android:text="09:32" />
+					android:id="@+id/wetAlertTime"
+					android:text="null"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -247,15 +240,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?android:attr/textAppearanceMedium"
-                    android:text="2014-7-12" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    style="?android:attr/textAppearanceMedium"
-                    android:text="12:20" />
+                    android:id="@+id/keyAlertTime"
+                    android:text="null"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -293,7 +279,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             style="?android:attr/textAppearanceLarge"
-            android:text="链接提醒:" />
+            android:text="脱落提醒:" />
 
         <LinearLayout
             android:id="@+id/LinearLayout_04h_01v"
@@ -324,15 +310,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?android:attr/textAppearanceMedium"
-                    android:text="2014-7-12" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    style="?android:attr/textAppearanceMedium"
-                    android:text="12:20" />
+                    android:id="@+id/dropAlertTime"
+                    android:text="null"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

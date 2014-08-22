@@ -77,11 +77,10 @@ public class BluetoothManager implements Runnable{
 			InputStreamReader isreader = new InputStreamReader(is);
 			BufferedReader bReader = new BufferedReader(isreader);
 			OutputStream os = socket.getOutputStream();
-
-			if(Info.checkFlag){
-				Info.checkFlag = false;
-				checkProgress(socket,bReader,os);
-				
+			boolean checkFlag = MainActivity.sp.getBoolean("checkFlag", false);
+			if(checkFlag){
+				MainActivity.sp.edit().putBoolean("checkFlag", false).commit();
+				checkProgress(socket,bReader,os);				
 			}
 			else communicationProcess(socket,bReader,os);
 		} catch (IOException e) {
@@ -98,22 +97,23 @@ public class BluetoothManager implements Runnable{
 		String reply;
 		os.write("GetID\r\n".getBytes());
 		String ID = bReader.readLine();
-//		Log.e("BluetoothManager", "ID:"+ID);
+		Log.e("BluetoothManager", "ID:"+ID);
 		os.write("OK\r\n".getBytes());
 		os.write("SetSysTime\r\n".getBytes());
 		reply = bReader.readLine();
-//		Log.e("BluetoothManager", "reply:"+reply);
+		Log.e("BluetoothManager", "reply:"+reply);
 		if(reply.equals("OK")){
 			String sysTime = format.format(System.currentTimeMillis());
 			os.write((sysTime+"\r\n").getBytes());
 			reply = bReader.readLine();
-//			Log.e("BluetoothManager", "reply:"+reply);
+			Log.e("BluetoothManager", "reply:"+reply);
 			if(reply.equals("SysTimeOK")){
 				String batteryInfo = bReader.readLine();
-//				Log.e("BluetoothManager", "batteryInfo:"+batteryInfo);
+				Log.e("BluetoothManager", "batteryInfo:"+batteryInfo);
 				if(batteryInfo.contains("BatteryLevel")){
-//					handleBattery(batteryInfo);
+					handleBattery(batteryInfo);
 					os.write("BatteryLevelOK\r\n".getBytes());
+					MainActivity.sp.edit().putBoolean("checkSucFlag", true).commit();
 				}
 			}
 		}
@@ -126,34 +126,38 @@ public class BluetoothManager implements Runnable{
 		String reply;
 		os.write("SetSysTime\r\n".getBytes());
 		reply = bReader.readLine();
+		Log.e("BluetoothManager", "reply:"+reply);
 		if(reply.equals("OK")){
 			String sysTime = format.format(System.currentTimeMillis());
 			os.write((sysTime+"\r\n").getBytes());
 			reply = bReader.readLine();
+			Log.e("BluetoothManager", "reply:"+reply);
 			if(reply.equals("SysTimeOK")){
 				String alertInfo = bReader.readLine();
+				Log.e("BluetoothManager", "alertInfo:"+alertInfo);
 				if(alertInfo.contains("Alert")){
-//					handleAlert(alertInfo);
+					handleAlert(alertInfo);
 					os.write("AlertOK\r\n".getBytes());
 					String batteryInfo = bReader.readLine();
+					Log.e("BluetoothManager", "batteryInfo:"+batteryInfo);
 					if(batteryInfo.contains("BatteryLevel")){
 //						handleBattery(batteryInfo);
-						os.write("BatteryLevelOK\r\n".getBytes());
+						os.write("BatteryLevelOK\r\n".getBytes());						
 					}
 				}				
 			}
 		}
-		close(socket);
+		close(socket);		
 		Log.e("BluetoothManager", "休眠2000ms");
 		sleep(INTERVAL);		
 	}
 	private void handleAlert(String alertInfo){
-		String userTel = Info.infoSharedPreferences.getString("userTel", "");
+		String userTel = Info.infoSharedPreferences.getString("userPhone", "");
 		String[] alertInfoArray = alertInfo.split(",");
 		int type = Integer.parseInt(alertInfoArray[1], 10);
 		String alertTime = alertInfoArray[2];
-		sendMessage(type,alertTime);
-		sendMessage(type,alertTime);
+		sendMessage(type,alertTime,Info.mListItemNurses);
+		sendMessage(type,alertTime,Info.mListItemRelatives);
 		try {
 			JSONObject alertJson = new JSONObject();
 			alertJson.put("ID", deviceID);
@@ -193,7 +197,7 @@ public class BluetoothManager implements Runnable{
 			}
 		}		
 	}
-	private void sendMessage(int type, String alertTime){
+	private void sendMessage(int type, String alertTime, ArrayList<HashMap<String,String>> list){
 		String userName = Info.infoSharedPreferences.getString("userName", "");
 		String alert1 = "您好，用户"+userName+"尿湿报警；"+"时间："+alertTime;
 		String alert2 = "您好，用户"+userName+"按键报警；"+"时间："+alertTime;
@@ -202,15 +206,38 @@ public class BluetoothManager implements Runnable{
 		String alert5 = "您好，用户"+userName+"穿戴正常；"+"时间："+alertTime;
 		String alert = null;
 		switch(type){
-			case 1:		alert = alert1; break;
-			case 2:		alert = alert2; break;
-			case 3:		alert = alert3; break;
-			case 4:		alert = alert4; break;
-			case 5:		alert = alert5; break;
+			case 1:		
+				alert = alert1;
+				MainActivity.wetAlertTime = alertTime;
+				MainActivity.SendMessage(MainActivity.handler, 1);
+				MainActivity.sp.edit().putString("wetAlertTime", alertTime).commit();
+				break;
+			case 2:		
+				alert = alert2;
+				MainActivity.keyAlertTime = alertTime;
+				MainActivity.SendMessage(MainActivity.handler, 2);
+				MainActivity.sp.edit().putString("keyAlertTime", alertTime).commit();
+				break;
+			case 3:
+				alert = alert3;
+				MainActivity.dropAlertTime = alertTime;
+				MainActivity.SendMessage(MainActivity.handler, 3);
+				MainActivity.sp.edit().putString("dropAlertTime", alertTime).commit();
+				break;
+			case 4:
+				alert = alert4;
+//				MainActivity.wetAlertTime = alertTime;
+//				MainActivity.SendMessage(MainActivity.handler, 1);
+				break;
+			case 5:
+				alert = alert5;
+//				MainActivity.wetAlertTime = alertTime;
+//				MainActivity.SendMessage(MainActivity.handler, 1);
+				break;
 		}
 		SmsManager smsManager = SmsManager.getDefault();
 		List<String> text1 = smsManager.divideMessage(alert);
-		List<String> telList = analysisList(Info.mListItemNurses);
+		List<String> telList = analysisList(list);
 		for(String tel: telList){
 			for (String text : text1) {
 				smsManager.sendTextMessage(tel, null, text, null, null);
@@ -223,6 +250,7 @@ public class BluetoothManager implements Runnable{
 			if(map.get("ItemCheckbox").equals("true"))
 				telList.add(map.get("ItemText"));
 		}
+		Log.e("BluetoothManager", "telList:"+telList.toString());
 		return telList;
 	}
 	

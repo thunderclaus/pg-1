@@ -361,7 +361,7 @@
             android:layout_height="wrap_content"
             android:text="提交"
             android:layout_gravity="center"
-            android:id="@+id/commit" />
+            android:id="@+id/submit" />
     </LinearLayout>
     <!-- 最外层 -->
 

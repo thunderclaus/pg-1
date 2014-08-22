@@ -35,7 +35,7 @@ public class RegisterNurseThread extends Thread{
 					sp.edit().putString("registerNurseStr", nurseStr).commit();
 					//界面显示										
 				}
-			}else System.out.println("注册护工失败");
+			}else MainActivity.SendMessage(MainActivity.handler, 5);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

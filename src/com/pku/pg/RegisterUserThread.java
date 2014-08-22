@@ -13,18 +13,18 @@ import android.widget.Toast;
 public class RegisterUserThread extends Thread{
 	private String userStr;
 	private SharedPreferences sp;
-//	private OnSucRegisterListener onSucRegisterListener;
+	private OnSucRegisterListener onSucRegisterListener;
 
 	public RegisterUserThread(String userStr,SharedPreferences sp){
 		this.userStr = userStr;
 		this.sp = sp;
 	}
-//	public interface OnSucRegisterListener {
-//		public void onSucRegister();
-//	}
-//	public void setOnSucRegisterListener(OnSucRegisterListener listener) {
-//		onSucRegisterListener = listener;
-//	}
+	public interface OnSucRegisterListener {
+		public void onSucRegister();
+	}
+	public void setOnSucRegisterListener(OnSucRegisterListener listener) {
+		onSucRegisterListener = listener;
+	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -44,10 +44,9 @@ public class RegisterUserThread extends Thread{
 				int IMSI_unique = jsonObj.getInt("IMSI_unique");
 				if(device_exist == 1&&name_unique == 1&&mobile_unique == 1&&IMSI_unique==1){
 					sp.edit().putString("registerUserStr", userStr).commit();
-					//界面显示	
-				}
-//				onSucRegisterListener.onSucRegister();				
-			}else System.out.println("注册用户失败");
+				}			
+				onSucRegisterListener.onSucRegister();
+			}else MainActivity.SendMessage(MainActivity.handler, 4);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
