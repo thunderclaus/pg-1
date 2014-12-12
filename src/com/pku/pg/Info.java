@@ -240,7 +240,7 @@ public class Info extends Activity implements OnClickListener {
 				});
 
 		// Log.i("Ç×Êô×¢²ásp",
-		Log.d("SP", MainActivity.sp.toString());
+		Log.d("SP", "sp.getAll().toString()");
 		// onCreate½áÊø*******************************************onCreate½áÊø*******************************************onCreate½áÊø
 
 	}

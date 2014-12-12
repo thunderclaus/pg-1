@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		imBattery.getDrawable().setLevel(((battery/10+1)/2));
 		imBtState.setBackgroundResource(R.drawable.btdisconnect);
 		
-		Log.d("SP", sp.toString());
+		Log.d("SP", sp.getAll().toString());
 	}
 	@Override
 	public void onClick(View v) {
