@@ -13,10 +13,17 @@ import android.widget.Toast;
 public class RegisterRelativesThread extends Thread{
 	private String relativesStr;
 	private SharedPreferences sp;
+	private boolean regRelativesFlag;
 
 	public RegisterRelativesThread(String relativesStr,SharedPreferences sp){
 		this.relativesStr = relativesStr;
 		this.sp = sp;
+	}
+	private void setRegRelativesFlag(boolean regRelativesFlag){
+		this.regRelativesFlag = regRelativesFlag;
+	}
+	protected boolean getRegRelativesFlag(){
+		return this.regRelativesFlag;
 	}
 	@Override
 	public void run() {
@@ -29,6 +36,7 @@ public class RegisterRelativesThread extends Thread{
 		try {
 			System.out.println("注册家属");
 			if(HttpRequest.sendPostRequest(path, params, enc)){
+				
 				System.out.println("POST家属数据成功");
 				JSONObject jsonObj = new JSONObject(HttpRequest.reply);
 				int device_exist = jsonObj.getInt("device_exist");
@@ -39,11 +47,16 @@ public class RegisterRelativesThread extends Thread{
 					
 					
 				}
-			}else MainActivity.SendMessage(MainActivity.handler, 6);
+				setRegRelativesFlag(true);
+			}else{
+				MainActivity.SendMessage(MainActivity.handler, 6);
+				setRegRelativesFlag(false);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-//			Log.e("RegisterRelativesThread", "注册亲属失败");
+			MainActivity.SendMessage(MainActivity.handler, 6);
+			setRegRelativesFlag(false);
 		}
 		
 	}

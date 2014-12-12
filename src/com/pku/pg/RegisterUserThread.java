@@ -50,7 +50,7 @@ public class RegisterUserThread extends Thread{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-//			Log.e("RegisterUserThread","×¢²áÓÃ»§Ê§°Ü");
+			MainActivity.SendMessage(MainActivity.handler, 4);
 		}
 		
 	}

@@ -10,10 +10,17 @@ import android.util.Log;
 public class RegisterNurseThread extends Thread{
 	private String nurseStr;
 	private SharedPreferences sp;
+	private boolean regNurseFlag;
 
 	public RegisterNurseThread(String nurseStr,SharedPreferences sp){
 		this.nurseStr = nurseStr;
 		this.sp = sp;
+	}
+	private void setRegNurseFlag(boolean regNurseFlag){
+		this.regNurseFlag = regNurseFlag;
+	}
+	protected boolean getRegNurseFlag(){
+		return this.regNurseFlag;
 	}
 
 	@Override
@@ -35,11 +42,16 @@ public class RegisterNurseThread extends Thread{
 					sp.edit().putString("registerNurseStr", nurseStr).commit();
 					//界面显示										
 				}
-			}else MainActivity.SendMessage(MainActivity.handler, 5);
+				setRegNurseFlag(true);
+			}else{
+				MainActivity.SendMessage(MainActivity.handler, 5);
+				setRegNurseFlag(false);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-//			Log.e("RegisterNurseThread", "注册护工失败");
+			MainActivity.SendMessage(MainActivity.handler, 5);
+			setRegNurseFlag(false);
 		}
 		
 	}

@@ -27,7 +27,7 @@ public class MyAdapter extends BaseAdapter{
         this.person = person;
         inflater = LayoutInflater.from(context);
     }
-                                                                                              
+                              
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
@@ -69,7 +69,7 @@ public class MyAdapter extends BaseAdapter{
         holder.cb.setChecked(list.get(position).get("ItemCheckbox").equals("true"));
         return convertView;
     }
-                                                                                              
+                         
     final class ViewHolder{
     	TextView tvPerson;
         TextView tvName;

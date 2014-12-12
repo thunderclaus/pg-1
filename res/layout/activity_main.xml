@@ -8,9 +8,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    
     tools:context=".MainActivity" >
-<!-- 第一列 -->
+
+    <!-- 第一列 -->
+
     <LinearLayout
         android:id="@+id/LinearLayout_01h"
         android:layout_width="match_parent"
@@ -24,34 +25,32 @@
         <ImageView
             android:id="@+id/imageView_pku"
             android:layout_width="0dp"
-            android:layout_weight="618"
             android:layout_height="wrap_content"
+            android:layout_weight="618"
             android:src="@drawable/pku" />
 
         <LinearLayout
             android:id="@+id/LinearLayout_01h_01v"
             android:layout_width="0dp"
-            android:layout_weight="1000"
             android:layout_height="match_parent"
+            android:layout_weight="1000"
             android:orientation="vertical" >
 
             <TextView
+                style="?android:attr/textAppearanceLarge"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center|bottom"
-                style="?android:attr/textAppearanceLarge"
-                android:text="健康监护"
-                 />
+                android:text="健康监护" />
 
             <TextView
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                style="?android:attr/textAppearanceMedium"
-                android:text="Health Supervion"
-                 />
+                android:text="Health Supervion" />
         </LinearLayout>
     </LinearLayout>
 
@@ -62,7 +61,8 @@
         android:layout_marginBottom="@dimen/parting_line_margin"
         android:layout_marginTop="@dimen/parting_line_margin"
         android:background="?android:attr/listDivider" />
-<!-- 第二列 -->
+    <!-- 第二列 -->
+
     <LinearLayout
         android:id="@+id/LinearLayout_02h"
         android:layout_width="match_parent"
@@ -72,42 +72,37 @@
         android:gravity="center"
         android:orientation="horizontal" >
 
+        <TextView
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="蓝牙:" />
+
         <ImageView
             android:id="@+id/imageView_bluetooth"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_width="68dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/bluetooth" />
+            android:layout_marginLeft="20dp"/>
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             style="?android:attr/textAppearanceMedium"
-            android:text="链接:" />
-
-        <ImageView
-            android:id="@+id/imageView_bulm"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitStart"
-            android:src="@drawable/light02" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            style="?android:attr/textAppearanceMedium"
+            android:layout_marginLeft="90dp"
             android:text="电量:" />
+        <TextView
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textview_battery"/>
 
         <ImageView
             android:id="@+id/imageView_battery"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:src="@drawable/power_60" />
+            android:src="@drawable/batteries" />
     </LinearLayout>
 
     <View
@@ -117,7 +112,8 @@
         android:layout_marginBottom="@dimen/parting_line_margin"
         android:layout_marginTop="@dimen/parting_line_margin"
         android:background="?android:attr/listDivider" />
-<!-- 第三列 -->
+    <!-- 第三列 -->
+
     <LinearLayout
         android:id="@+id/LinearLayout_03h"
         android:layout_width="match_parent"
@@ -135,12 +131,12 @@
             android:src="@drawable/matong" />
 
         <TextView
+            style="?android:attr/textAppearanceLarge"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
             android:paddingLeft="10dp"
-            style="?android:attr/textAppearanceLarge"
             android:text="尿湿提醒:" />
 
         <LinearLayout
@@ -153,11 +149,11 @@
             android:paddingLeft="10dp" >
 
             <TextView
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="left|bottom"
-                style="?android:attr/textAppearanceMedium"
                 android:text="上次:" />
 
             <LinearLayout
@@ -169,11 +165,11 @@
                 android:orientation="horizontal" >
 
                 <TextView
+                    android:id="@+id/wetAlertTime"
+                    style="?android:attr/textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?android:attr/textAppearanceMedium"
-					android:id="@+id/wetAlertTime"
-					android:text="null"/>
+                    android:text="null" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -185,7 +181,8 @@
         android:layout_marginBottom="@dimen/parting_line_margin"
         android:layout_marginTop="@dimen/parting_line_margin"
         android:background="?android:attr/listDivider" />
-<!-- 第四列 -->
+    <!-- 第四列 -->
+
     <LinearLayout
         android:id="@+id/LinearLayout_04h"
         android:layout_width="match_parent"
@@ -203,12 +200,12 @@
             android:src="@drawable/bell" />
 
         <TextView
+            style="?android:attr/textAppearanceLarge"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
             android:paddingLeft="10dp"
-            style="?android:attr/textAppearanceLarge"
             android:text="按键提醒:" />
 
         <LinearLayout
@@ -221,11 +218,11 @@
             android:paddingLeft="10dp" >
 
             <TextView
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="left|bottom"
-                style="?android:attr/textAppearanceMedium"
                 android:text="上次:" />
 
             <LinearLayout
@@ -237,11 +234,11 @@
                 android:orientation="horizontal" >
 
                 <TextView
+                    android:id="@+id/keyAlertTime"
+                    style="?android:attr/textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?android:attr/textAppearanceMedium"
-                    android:id="@+id/keyAlertTime"
-                    android:text="null"/>
+                    android:text="null" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -254,8 +251,8 @@
         android:layout_marginTop="@dimen/parting_line_margin"
         android:background="?android:attr/listDivider" />
 
+    <!-- 第五列 -->
 
-<!-- 第五列 -->
     <LinearLayout
         android:id="@+id/LinearLayout_05h"
         android:layout_width="match_parent"
@@ -273,12 +270,12 @@
             android:src="@drawable/link" />
 
         <TextView
+            style="?android:attr/textAppearanceLarge"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
             android:paddingLeft="10dp"
-            style="?android:attr/textAppearanceLarge"
             android:text="脱落提醒:" />
 
         <LinearLayout
@@ -291,11 +288,11 @@
             android:paddingLeft="10dp" >
 
             <TextView
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="left|bottom"
-                style="?android:attr/textAppearanceMedium"
                 android:text="上次:" />
 
             <LinearLayout
@@ -307,11 +304,11 @@
                 android:orientation="horizontal" >
 
                 <TextView
+                    android:id="@+id/dropAlertTime"
+                    style="?android:attr/textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?android:attr/textAppearanceMedium"
-                    android:id="@+id/dropAlertTime"
-                    android:text="null"/>
+                    android:text="null" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -324,7 +321,8 @@
         android:layout_marginTop="@dimen/parting_line_margin"
         android:background="?android:attr/listDivider" />
 
-<!-- 第六列 -->
+    <!-- 第六列 -->
+
     <LinearLayout
         android:id="@+id/LinearLayout_06h"
         android:layout_width="match_parent"
@@ -337,17 +335,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            
             android:src="@drawable/regist" />
 
         <TextView
+            style="?android:attr/textAppearanceLarge"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="left|center"
-            
             android:paddingLeft="20dp"
-            style="?android:attr/textAppearanceLarge"
             android:text="注册信息:" />
 
         <ImageView
@@ -367,7 +363,8 @@
         android:layout_marginBottom="@dimen/parting_line_margin"
         android:layout_marginTop="@dimen/parting_line_margin"
         android:background="?android:attr/listDivider" />
-<!-- 第七列 -->
+    <!-- 第七列 -->
+
     <LinearLayout
         android:id="@+id/LinearLayout_07h"
         android:layout_width="match_parent"
@@ -379,11 +376,10 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:paddingLeft="40dp"
             android:src="@drawable/bluetuthlogo" />
-
 
         <ImageView
             android:layout_width="0dp"
@@ -391,8 +387,8 @@
             android:layout_gravity="left"
             android:layout_weight="2"
             android:paddingLeft="20dp"
-            android:scaleType="fitEnd"
             android:paddingRight="40dp"
+            android:scaleType="fitEnd"
             android:src="@drawable/pku" />
     </LinearLayout>
 

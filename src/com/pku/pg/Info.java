@@ -18,6 +18,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,7 @@ public class Info extends Activity implements OnClickListener {
 	private TextView tv_userHospital;
 	private Context infoContext;
 	static Activity activity;
+	static ProgressDialog dialog = null;
 
 	private String deviceID;
 	private String userStr;
@@ -67,13 +69,10 @@ public class Info extends Activity implements OnClickListener {
 	private ListViewForScrollView mListviewNurses;
 	private ListViewForScrollView mListviewRelatives;
 
-	static SharedPreferences infoSharedPreferences;
-	private Editor editor;
-
 	static ArrayList<HashMap<String, String>> mListItemNurses;
 	static ArrayList<HashMap<String, String>> mListItemRelatives;
 
-	private JSONArray nursesJsonArray;
+	private JSONArray nursesJsonArray;//没有生效!!!
 	private JSONArray relativesJsonArray;
 	private JSONArray userJsonArray;
 	private MyAdapter nurseAdapter;
@@ -106,30 +105,31 @@ public class Info extends Activity implements OnClickListener {
 		infoActionBar.setHomeButtonEnabled(true);
 		infoActionBar.setDisplayHomeAsUpEnabled(true);
 		infoActionBar.setDisplayShowHomeEnabled(true);
+		//添加了infoAB,
 		
-		userJsonArray = new JSONArray();
+		userJsonArray = new JSONArray();//没有生效!!!
 		infoContext = Info.this;
 		activity = this;
-		infoSharedPreferences = infoContext.getSharedPreferences("UserInfo",Context.MODE_PRIVATE);
-		editor = infoSharedPreferences.edit();
+		
 		// spclear();
-		regUserMac.setText(infoSharedPreferences.getString("inputID", ""));
+		regUserMac.setText(MainActivity.sp.getString("inputID", ""));
 		tv_userName = (TextView) findViewById(R.id.info_textview_UserName);
 		tv_userPhone = (TextView) findViewById(R.id.info_textview_UserPhone);
 		tv_userHospital = (TextView) findViewById(R.id.info_textview_UserHospital);
-		tv_userName.setText(infoSharedPreferences.getString("userName", "数据尚未写入"));
-		tv_userPhone.setText(infoSharedPreferences.getString("userPhone", "数据尚未写入"));
-		tv_userHospital.setText(infoSharedPreferences.getString("geracomium","数据尚未写入"));
+		tv_userName.setText(MainActivity.sp.getString("userName", ""));
+		tv_userPhone.setText(MainActivity.sp.getString("userPhone", ""));
+		tv_userHospital.setText(MainActivity.sp.getString("geracomium",""));
 		/*
 		 * 护工
 		 * *******************************************************************
 		 * **********************************************************护工OnCreate
 		 */
 		mListviewNurses = (ListViewForScrollView) findViewById(R.id.info_list_Nurses); /* 定义一个动态数组 */
-		Set nurseSet = infoSharedPreferences.getStringSet("nurseSet", null);
+		Set nurseSet = MainActivity.sp.getStringSet("nurseSet", null);
 		if(nurseSet!=null)
 			mListItemNurses = (ArrayList<HashMap<String, String>>) nurseSet.iterator().next();
 		else mListItemNurses = new ArrayList<HashMap<String, String>>();
+		//nurseSer如果为空,新建填充,如果不为空,填入下一项.
 		
 		nurseAdapter = new MyAdapter(mListItemNurses,this,"看  护  人");
 		mListviewNurses.setAdapter(nurseAdapter);
@@ -177,7 +177,6 @@ public class Info extends Activity implements OnClickListener {
 				});
 
 		// Log.i("护工注册sp",
-		// infoSharedPreferences.getString("NursesInfo","Nothing Doh!l"));
 
 		/*
 		 * 亲属 ************************************************************
@@ -186,7 +185,7 @@ public class Info extends Activity implements OnClickListener {
 		 * onCreate
 		 */
 		mListviewRelatives = (ListViewForScrollView) findViewById(R.id.info_list_Relatives); /* 定义一个动态数组 */
-		Set relativeSet = infoSharedPreferences.getStringSet("relativeSet", null);
+		Set relativeSet = MainActivity.sp.getStringSet("relativeSet", null);
 		if(relativeSet!=null)
 			mListItemRelatives = (ArrayList<HashMap<String, String>>) relativeSet.iterator().next();
 		else mListItemRelatives = new ArrayList<HashMap<String, String>>();
@@ -241,8 +240,7 @@ public class Info extends Activity implements OnClickListener {
 				});
 
 		// Log.i("亲属注册sp",
-		// infoSharedPreferences.getString("RelativesInfo","Nothing Doh!l"));
-
+		Log.d("SP", MainActivity.sp.toString());
 		// onCreate结束*******************************************onCreate结束*******************************************onCreate结束
 
 	}
@@ -285,11 +283,10 @@ public class Info extends Activity implements OnClickListener {
 									// TODO Auto-generated method stub
 									// 保存进SharedPreferences
 									
-									editor.putString("Mac", "");
-									editor.putString("userName", "");
-									editor.putString("userPhone", "");
-									editor.putString("geracomium", "");
-									editor.commit();
+									MainActivity.sp.edit().putString("Mac", "")
+									.putString("userName", "")
+									.putString("userPhone", "")
+									.putString("geracomium", "").commit();
 									tv_userName.setText(null);
 									tv_userPhone.setText(null);
 									tv_userHospital.setText(null);
@@ -336,11 +333,10 @@ public class Info extends Activity implements OnClickListener {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
-									editor.putString("userStr", jsonObject.toString());
-									editor.putString("userName",regUserName.getText().toString());									
-									editor.putString("userPhone", regUserPhone.getText().toString());
-									editor.putString("geracomium",regUserHospital.getText().toString());
-									editor.commit();
+									MainActivity.sp.edit().putString("userStr", jsonObject.toString())
+									.putString("userName",regUserName.getText().toString())								
+									.putString("userPhone", regUserPhone.getText().toString())
+									.putString("geracomium",regUserHospital.getText().toString()).commit();
 									tv_userName.setText(regUserName.getText().toString());
 									tv_userPhone.setText(regUserPhone.getText().toString());
 									tv_userHospital.setText(regUserHospital.getText().toString());
@@ -429,20 +425,26 @@ public class Info extends Activity implements OnClickListener {
 			String inputID = regUserMac.getText().toString();
 			if(inputID.length()==12&&inputID.matches("\\w{12}")){
 				deviceID = insertChar(inputID);	
-				infoSharedPreferences.edit().putString("deviceID", deviceID).commit();
+				MainActivity.sp.edit().putString("deviceID", deviceID).commit();
 				Intent intent = new Intent(infoContext,BtService.class);
 				Bundle bundle = new Bundle();
 				bundle.putString("deviceID", deviceID);
 				intent.putExtras(bundle);
-				infoContext.startService(intent);							
+				infoContext.startService(intent);	
+				dialog = new ProgressDialog(this);
+				dialog.setTitle("检测");
+				dialog.setMessage("正在连接设备");
+				dialog.setCanceledOnTouchOutside(false);
+				dialog.setCancelable(false);
+				dialog.show();
 			}else Toast.makeText(this, "对不起，您输入的序列号格式有误，请重新输入", Toast.LENGTH_LONG).show();					
 			break;
 		case R.id.submit:
 			//注册用户
 			boolean checkSucFlag = MainActivity.sp.getBoolean("checkSucFlag", false);
 			if(checkSucFlag){
-//				String registerUserStr = infoSharedPreferences.getString("registerUserStr", "registerNurseStr");
-//				String userStr = infoSharedPreferences.getString("userStr", "userStr");
+//				String registerUserStr = MainActivity.sp.getString("registerUserStr", "registerUserStr");
+				String userStr = MainActivity.sp.getString("userStr", "userStr");
 				String newUserStr = null;
 				try {
 					JSONObject obj1 = new JSONObject(userStr);
@@ -454,14 +456,14 @@ public class Info extends Activity implements OnClickListener {
 					e2.printStackTrace();
 				}
 //				if(userStr!= "userStr"&&registerUserStr!= newUserStr){		
-					RegisterUserThread thread = new RegisterUserThread(newUserStr,infoSharedPreferences);
+					RegisterUserThread thread = new RegisterUserThread(newUserStr,MainActivity.sp);
 					thread.start();
 					thread.setOnSucRegisterListener(new OnSucRegisterListener(){
 						@Override
 						public void onSucRegister() {
 							// TODO Auto-generated method stub
 							//注册护工
-//							String registerNurseStr = infoSharedPreferences.getString("registerNurseStr", "registerNurseStr");
+//							String registerNurseStr = MainActivity.sp.getString("registerNurseStr", "registerNurseStr");
 							JSONArray nurseArray = new JSONArray();
 							for(HashMap<String,String> map: mListItemNurses){
 								if(map.get("ItemCheckbox").equals("true")){
@@ -479,7 +481,7 @@ public class Info extends Activity implements OnClickListener {
 							String newNurseStr = null;			
 							try {
 								JSONObject obj3 = new JSONObject();
-								deviceID = infoSharedPreferences.getString("deviceID", "");
+								deviceID = MainActivity.sp.getString("deviceID", "");
 								obj3.put("ID", deviceID);
 								obj3.put("nursesInfo", nurseArray);
 								JSONObject obj4 = new JSONObject();
@@ -490,12 +492,12 @@ public class Info extends Activity implements OnClickListener {
 								e.printStackTrace();
 							}			
 //							if(registerNurseStr!= newNurseStr){				
-								RegisterNurseThread registerNurseThread = new RegisterNurseThread(newNurseStr,infoSharedPreferences);
+								RegisterNurseThread registerNurseThread = new RegisterNurseThread(newNurseStr,MainActivity.sp);
 								registerNurseThread.start();
 //							}
 							
 							//注册亲属
-//							String registerRelativesStr = infoSharedPreferences.getString("registerRelativesStr", "registerRelativesStr");
+//							String registerRelativesStr = MainActivity.sp.getString("registerRelativesStr", "registerRelativesStr");
 							JSONArray relativeArray = new JSONArray();
 							for(HashMap<String,String> map: mListItemRelatives){
 								if(map.get("ItemCheckbox").equals("true")){
@@ -513,7 +515,7 @@ public class Info extends Activity implements OnClickListener {
 							String newRelativeStr = null;			
 							try {
 								JSONObject obj3 = new JSONObject();
-								deviceID = infoSharedPreferences.getString("deviceID", "");
+								deviceID = MainActivity.sp.getString("deviceID", "");
 								obj3.put("ID", deviceID);
 								obj3.put("relativesInfo", relativeArray);
 								JSONObject obj4 = new JSONObject();
@@ -524,9 +526,13 @@ public class Info extends Activity implements OnClickListener {
 								e.printStackTrace();
 							}			
 //							if(registerRelativesStr!= newRelativeStr){				
-								RegisterRelativesThread registerRelativesThread = new RegisterRelativesThread(newRelativeStr,infoSharedPreferences);
+								RegisterRelativesThread registerRelativesThread = new RegisterRelativesThread(newRelativeStr,MainActivity.sp);
 								registerRelativesThread.start();
-//							}							
+//							}			
+								
+							//注册成功后提示，注册为线程，此时做判断时还没有把标识位置为true，所以没有提示	
+//							if(registerNurseThread.getRegNurseFlag()&&registerRelativesThread.getRegRelativesFlag())
+//								MainActivity.SendMessage(MainActivity.handler, 12);
 						}						
 					});
 //				}								
@@ -556,7 +562,7 @@ public class Info extends Activity implements OnClickListener {
 		nurseSet.add(mListItemNurses);
 		Set relativeSet = new HashSet();
 		relativeSet.add(mListItemRelatives);
-		infoSharedPreferences.edit().putStringSet("nurseSet", nurseSet)
+		MainActivity.sp.edit().putStringSet("nurseSet", nurseSet)
 		.putStringSet("relativeSet", relativeSet)
 		.putString("inputID", regUserMac.getText().toString()).commit();
 	}
