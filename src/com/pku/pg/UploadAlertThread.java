@@ -33,7 +33,7 @@ public class UploadAlertThread extends Thread{
 				int user_exist = jsonObj.getInt("user_exist");
 				if(device_exist == 1&&user_exist == 1){
 					//ΩÁ√Êœ‘ æ
-					
+					MainActivity.SendMessage(MainActivity.handler, 13);
 					
 				}
 			}

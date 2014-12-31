@@ -138,6 +138,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			case 12:
 				Toast.makeText(context, "注册成功", Toast.LENGTH_LONG).show();
 				break;
+			case 13:
+				Toast.makeText(context, "已发送警报", Toast.LENGTH_LONG).show();
+				break;
 				}
 			}
 	};
