@@ -31,6 +31,8 @@ public class UploadAlertThread extends Thread{
 				JSONObject jsonObj = new JSONObject(HttpRequest.reply);
 				int device_exist = jsonObj.getInt("device_exist");
 				int user_exist = jsonObj.getInt("user_exist");
+				int key_id = jsonObj.getInt("dataID");
+				MainActivity.sp.edit().putInt("dataID", key_id).commit();
 				if(device_exist == 1&&user_exist == 1){
 					//ΩÁ√Êœ‘ æ
 					MainActivity.SendMessage(MainActivity.handler, 13);

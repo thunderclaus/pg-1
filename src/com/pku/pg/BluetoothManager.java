@@ -32,8 +32,8 @@ public class BluetoothManager implements Runnable {
 	private SimpleDateFormat format;
 
 	private boolean connectting;
-	private final int CONNECT_INTERVAL = 500; // 每隔500ms重新开始建立蓝牙连接
-	private final int INTERVAL = 2000; // 每次连接成功通信结束后，休眠3000ms开始下一次连接
+	private final int CONNECT_INTERVAL = 1000; // 每隔500ms重新开始建立蓝牙连接
+	private final int INTERVAL = 3000; // 每次连接成功通信结束后，休眠3000ms开始下一次连接
 
 	public BluetoothManager(String deviceID) {
 		this.deviceID = deviceID;
@@ -173,14 +173,22 @@ public class BluetoothManager implements Runnable {
 		String[] alertInfoArray = alertInfo.split(",");
 		int type = Integer.parseInt(alertInfoArray[1], 10);
 		String alertTime = alertInfoArray[2];
-		sendMessage(type, alertTime, Info.mListItemNurses);
+		int alertState = 0;
+		
+		//sendMessage(type, alertTime, Info.mListItemNurses);
 		sendMessage(type, alertTime, Info.mListItemRelatives);
+		
+		
+		
+		//同Web服务器进行报警
 		try {
 			JSONObject alertJson = new JSONObject();
 			alertJson.put("ID", deviceID);
 			alertJson.put("type", type);
 			alertJson.put("mobile", userTel);
 			alertJson.put("recordTime", alertTime);
+			alertJson.put("alertState", alertState);
+
 			JSONObject newAlertJson = new JSONObject();
 			newAlertJson.put("alert", alertJson);
 			String alertStr = newAlertJson.toString();
@@ -190,7 +198,8 @@ public class BluetoothManager implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		
 	}
 
 	private void handleBattery(String batteryInfo) {

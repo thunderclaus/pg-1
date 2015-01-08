@@ -190,9 +190,9 @@ public class Info extends Activity implements OnClickListener {
 			mListItemRelatives = (ArrayList<HashMap<String, String>>) relativeSet.iterator().next();
 		else mListItemRelatives = new ArrayList<HashMap<String, String>>();
 		
+	
 		relativeAdapter = new MyAdapter(mListItemRelatives,this,"Ç×     ÓÑ");
 		mListviewRelatives.setAdapter(relativeAdapter);
-		
 		mListviewRelatives.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
