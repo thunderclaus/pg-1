@@ -1,26 +1,18 @@
 package com.pku.pg;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -174,30 +166,15 @@ public class BluetoothManager implements Runnable {
 		int type = Integer.parseInt(alertInfoArray[1], 10);
 		String alertTime = alertInfoArray[2];
 		int alertState = 0;
-		
+		String patientName = MainActivity.sp.getString("userName", "");
+		List<String> nurseCheckedList = analysisList(Info.mListItemRelatives);
 		//sendMessage(type, alertTime, Info.mListItemNurses);
 		sendMessage(type, alertTime, Info.mListItemRelatives);
 		
-		
-		
-		//同Web服务器进行报警
-		try {
-			JSONObject alertJson = new JSONObject();
-			alertJson.put("ID", deviceID);
-			alertJson.put("type", type);
-			alertJson.put("mobile", userTel);
-			alertJson.put("recordTime", alertTime);
-			alertJson.put("alertState", alertState);
-
-			JSONObject newAlertJson = new JSONObject();
-			newAlertJson.put("alert", alertJson);
-			String alertStr = newAlertJson.toString();
-			UploadAlertThread thread = new UploadAlertThread(alertStr);
-			thread.start();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//将数据传给报警线程
+		UploadAlertThread thread = new UploadAlertThread(deviceID, type, alertTime, userTel, 
+				alertState, patientName, nurseCheckedList);
+		thread.start();
 		
 		
 	}
