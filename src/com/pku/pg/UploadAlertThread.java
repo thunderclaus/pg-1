@@ -17,7 +17,7 @@ public class UploadAlertThread extends Thread{
 	private List<String> nursePhone;
 	private int dataID;
 	private String alertWebStr; 
-
+	//зЂВс?
 	public UploadAlertThread(String ID, int type, String recordTime, String mobile, 
 			int alertState, String patientName, List<String> nursePhone){
 		this.id = ID;
@@ -82,7 +82,7 @@ public class UploadAlertThread extends Thread{
 						newJpushJson.put("alert", jpushJson);
 						String jpushStr = newJpushJson.toString();
 						UploadJpush uploadJpush = new UploadJpush(jpushStr);
-						uploadJpush.upload();
+						uploadJpush.start();
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

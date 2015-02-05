@@ -144,10 +144,20 @@ public class BluetoothManager implements Runnable {
 			reply = readOneLine(is);
 			Log.e("BluetoothManager", "reply:" + reply);
 			if (reply.equals("SysTimeOK")) {
-				String alertInfo = readOneLine(is);
-				Log.e("BluetoothManager", "alertInfo:" + alertInfo);
-				if (alertInfo.contains("Alert")) {
-					handleAlert(alertInfo);
+				String alertNum = readOneLine(is);
+				Log.e("BluetoothManager", "alertNum:" + alertNum);				
+				if (alertNum.contains("AlertNum")) {
+					int num = Integer.parseInt(alertNum.substring(9));
+					
+					String alertInfo;
+					ArrayList<String> list = new ArrayList<String>();
+					for(int i = 0;i<num;i++) {
+						alertInfo = readOneLine(is);
+						if (alertInfo.contains("Alert")) {
+							list.add(alertInfo);
+						}
+					}						
+					handleAlert(list);
 					os.write("AlertOK\r\n".getBytes());
 					String batteryInfo = readOneLine(is);
 					Log.e("BluetoothManager", "batteryInfo:" + batteryInfo);
@@ -160,24 +170,44 @@ public class BluetoothManager implements Runnable {
 		}
 	}
 
-	private void handleAlert(String alertInfo) {
-		String userTel = MainActivity.sp.getString("userPhone", "");
-		String[] alertInfoArray = alertInfo.split(",");
-		int type = Integer.parseInt(alertInfoArray[1], 10);
-		String alertTime = alertInfoArray[2];
-		int alertState = 0;
-		String patientName = MainActivity.sp.getString("userName", "");
-		List<String> nurseCheckedList = analysisList(Info.mListItemRelatives);
-		//sendMessage(type, alertTime, Info.mListItemNurses);
-		sendMessage(type, alertTime, Info.mListItemRelatives);
-		
-		//将数据传给报警线程
-		UploadAlertThread thread = new UploadAlertThread(deviceID, type, alertTime, userTel, 
-				alertState, patientName, nurseCheckedList);
-		thread.start();
-		
-		
-	}
+	private void handleAlert(ArrayList<String> templist ) {
+		int l = templist.size();
+		for(int i = 0; i< l ; i++) {
+			String alertInfo = templist.get(i);
+			String userTel = MainActivity.sp.getString("userPhone", "");
+			String[] alertInfoArray = alertInfo.split(",");
+			int type = Integer.parseInt(alertInfoArray[1], 10);
+			String alertTime = alertInfoArray[2];
+			int alertState = 0;
+			String patientName = MainActivity.sp.getString("userName", "");
+			List<String> nurseCheckedList = analysisList(Info.mListItemRelatives);
+			//sendMessage(type, alertTime, Info.mListItemNurses);
+			sendMessage(type, alertTime, Info.mListItemRelatives);
+			
+			//将数据传给报警线程
+			UploadAlertThread thread = new UploadAlertThread(deviceID, type, alertTime, userTel, 
+					alertState, patientName, nurseCheckedList);
+			thread.start();
+		}
+}
+//	private void handleAlert(String alertInfo) {
+//		String userTel = MainActivity.sp.getString("userPhone", "");
+//		String[] alertInfoArray = alertInfo.split(",");
+//		int type = Integer.parseInt(alertInfoArray[1], 10);
+//		String alertTime = alertInfoArray[2];
+//		int alertState = 0;
+//		String patientName = MainActivity.sp.getString("userName", "");
+//		List<String> nurseCheckedList = analysisList(Info.mListItemRelatives);
+//		//sendMessage(type, alertTime, Info.mListItemNurses);
+//		sendMessage(type, alertTime, Info.mListItemRelatives);
+//		
+//		//将数据传给报警线程
+//		UploadAlertThread thread = new UploadAlertThread(deviceID, type, alertTime, userTel, 
+//				alertState, patientName, nurseCheckedList);
+//		thread.start();
+//		
+//		
+//	}
 
 	private void handleBattery(String batteryInfo) {
 		String[] batteryInfoArray = batteryInfo.split(",");
