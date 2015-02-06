@@ -24,7 +24,7 @@ public class UploadJpush extends Thread{
 
 	public void upload() {
 		try {
-			Socket socket = new Socket("162.105.76.252", 2014);
+			Socket socket = new Socket("162.105.76.252", 2016);
 			OutputStream output = socket.getOutputStream();
 			JSONObject sendJson = new JSONObject();
 			try {
