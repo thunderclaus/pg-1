@@ -8,7 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -42,21 +46,34 @@ public class BluetoothManager implements Runnable {
 			Log.e("BluetoothManager", "循环结束");
 		}
 	}
-
+	private String insertChar(String str){
+		String newStr;
+		StringBuffer sb = new StringBuffer(str);
+		int i = 0;
+		while((i+=2) < sb.length()){
+			sb.insert(i, ':');
+			i++;
+		}
+		newStr = sb.toString();
+		return newStr;
+	}
 	private void connect() {
 		BluetoothSocket socket = null;
 		if (!deviceID.equals(null)) {
 			Log.e("BluetoothManager", "开始连接");
 			if (!adapter.isEnabled())
 				adapter.enable();
-			BluetoothDevice device = adapter.getRemoteDevice(deviceID);
+			String mac = insertChar(deviceID.substring(4));
+			BluetoothDevice device = adapter.getRemoteDevice(mac);
 			try {
-				socket = createBluetoothSocket(device);
+//				socket = createBluetoothSocket(device);
+				Method m = device.getClass().getMethod("createRfcommSocket", new Class[] {int.class});
+				socket = (BluetoothSocket) m.invoke(device, 1);
 				socket.connect();
 				MainActivity.SendMessage(MainActivity.handler, 7);
 				Log.e("BluetoothManager", "连接完成");
 				initStream(socket);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				if (Info.dialog != null && Info.dialog.isShowing()) {
@@ -66,40 +83,32 @@ public class BluetoothManager implements Runnable {
 					MainActivity.SendMessage(MainActivity.handler, 11);
 				}
 				close(socket);
+				MainActivity.SendMessage(MainActivity.handler, 8);
 				Log.e("BluetoothManager", "休眠500ms");
 				sleep(CONNECT_INTERVAL);
 			}
 		}
 	}
 
-	private void initStream(BluetoothSocket socket) {
-		try {
-			InputStream is = socket.getInputStream();
-			// InputStreamReader isreader = new InputStreamReader(is);
-			// BufferedReader bReader = new BufferedReader(isreader);
-			OutputStream os = socket.getOutputStream();
-			boolean checkFlag = MainActivity.sp.getBoolean("checkFlag", false);
-			if (checkFlag) {
-				MainActivity.sp.edit().putBoolean("checkFlag", false).commit();
-				checkProgress(socket, is, os);
-				if (Info.dialog != null && Info.dialog.isShowing()) {
-					Info.dialog.cancel();
-					MainActivity.SendMessage(MainActivity.handler, 10);
-				}
-			} else
-				communicationProcess(socket, is, os);
-			close(socket);
-			Log.e("BluetoothManager", "休眠2000ms");
-			sleep(INTERVAL);
-			MainActivity.SendMessage(MainActivity.handler, 8);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			close(socket);
-			MainActivity.SendMessage(MainActivity.handler, 8);
-			Log.e("BluetoothManager", "休眠500ms");
-			sleep(CONNECT_INTERVAL);
-		}
+	private void initStream(BluetoothSocket socket) throws IOException {
+		InputStream is = socket.getInputStream();
+		// InputStreamReader isreader = new InputStreamReader(is);
+		// BufferedReader bReader = new BufferedReader(isreader);
+		OutputStream os = socket.getOutputStream();
+		boolean checkFlag = MainActivity.sp.getBoolean("checkFlag", false);
+		if (checkFlag) {
+			MainActivity.sp.edit().putBoolean("checkFlag", false).commit();
+			checkProgress(socket, is, os);
+			if (Info.dialog != null && Info.dialog.isShowing()) {
+				Info.dialog.cancel();
+				MainActivity.SendMessage(MainActivity.handler, 10);
+			}
+		} else
+			communicationProcess(socket, is, os);
+		close(socket);
+		Log.e("BluetoothManager", "休眠2000ms");
+		sleep(INTERVAL);
+		MainActivity.SendMessage(MainActivity.handler, 8);
 	}
 
 	private void checkProgress(BluetoothSocket socket, InputStream is,
@@ -153,6 +162,7 @@ public class BluetoothManager implements Runnable {
 					ArrayList<String> list = new ArrayList<String>();
 					for(int i = 0;i<num;i++) {
 						alertInfo = readOneLine(is);
+						Log.e("BluetoothManager", "alertInfo:" + alertInfo);
 						if (alertInfo.contains("Alert")) {
 							list.add(alertInfo);
 						}
@@ -170,9 +180,9 @@ public class BluetoothManager implements Runnable {
 		}
 	}
 
-	private void handleAlert(ArrayList<String> templist ) {
+	private void handleAlert(ArrayList<String> templist) {
 		int l = templist.size();
-		for(int i = 0; i< l ; i++) {
+		for (int i = 0; i < l; i++) {
 			String alertInfo = templist.get(i);
 			String userTel = MainActivity.sp.getString("userPhone", "");
 			String[] alertInfoArray = alertInfo.split(",");
@@ -180,16 +190,43 @@ public class BluetoothManager implements Runnable {
 			String alertTime = alertInfoArray[2];
 			int alertState = 0;
 			String patientName = MainActivity.sp.getString("userName", "");
-			List<String> nurseCheckedList = analysisList(Info.mListItemRelatives);
-			//sendMessage(type, alertTime, Info.mListItemNurses);
-			sendMessage(type, alertTime, Info.mListItemRelatives);
 			
-			//将数据传给报警线程
-			UploadAlertThread thread = new UploadAlertThread(deviceID, type, alertTime, userTel, 
-					alertState, patientName, nurseCheckedList);
+			//短信报警功能
+			Set relativeSet = MainActivity.sp.getStringSet("relativeSet", null);
+			ArrayList<HashMap<String, String>> mListItem;
+			if(relativeSet!=null) {
+				mListItem = (ArrayList<HashMap<String, String>>) relativeSet.iterator().next();
+			sendMessage(type, alertTime, mListItem);
+			}
+			else {
+			Log.e("BluetoothManager", "sendMessage失败, relativeSet列表为空");
+			}
+
+			
+			
+			// sendMessage(type, alertTime, Info.mListItemNurses);
+			JSONArray nursePhone =  new JSONArray();
+			try {
+				nursePhone = new JSONArray(MainActivity.sp.getString("checkedNursePhone", ""));
+			
+			
+			String patientPhone=MainActivity.sp.getString("userPhone", "");
+			// 将数据传给报警线程			
+			UploadAlertThread thread = new UploadAlertThread(deviceID, type,
+					alertTime, userTel, alertState, patientName,
+					nursePhone,patientPhone);
+			Log.e("发送报警成功", "nurseCheckedLis:"+nursePhone.toString());
+//			+" ,type"+type
+//					+",alertTime"+alertTime+", userTel+userTel, +alertState+alertState, patientName,+patientName
+//					nurseCheckedLis" +nurseCheckedLis)
 			thread.start();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				Log.e("BluetoothManager", "sendMessage WRONG :checkedNursePhone 为空");
+			}
 		}
-}
+	}
 //	private void handleAlert(String alertInfo) {
 //		String userTel = MainActivity.sp.getString("userPhone", "");
 //		String[] alertInfoArray = alertInfo.split(",");
@@ -289,13 +326,16 @@ public class BluetoothManager implements Runnable {
 	}
 
 	private List<String> analysisList(ArrayList<HashMap<String, String>> list) {
-		List<String> telList = new ArrayList<String>();
-		for (HashMap<String, String> map : list) {
-			if (map.get("ItemCheckbox").equals("true"))
-				telList.add(map.get("ItemText"));
+		if(list!=null) {
+			List<String> telList = new ArrayList<String>();
+			for (HashMap<String, String> map : list) {
+				if (map.get("ItemCheckbox").equals("true"))
+					telList.add(map.get("ItemText"));
+			}
+			Log.e("BluetoothManager", "telList:" + telList.toString());
+			return telList;
 		}
-		Log.e("BluetoothManager", "telList:" + telList.toString());
-		return telList;
+		return null;
 	}
 
 	private String readOneLine(InputStream is) {
@@ -304,11 +344,11 @@ public class BluetoothManager implements Runnable {
 		int readCount = 0; // 已经成功读取的字节的个数
 		while (readCount < buffer.length) {
 			try {
-				readCount += is.read(buffer, readCount, buffer.length
-						- readCount);
+				readCount += is.read(buffer, readCount, buffer.length - readCount);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
 			}
 			reply = new String(buffer, 0, readCount);
 			if (reply.indexOf("\r\n") != -1) // 遇到"\r\n"结束 跳出循环

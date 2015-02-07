@@ -26,15 +26,15 @@ public class UploadJpush extends Thread{
 		try {
 			Socket socket = new Socket("162.105.76.252", 2016);
 			OutputStream output = socket.getOutputStream();
-			JSONObject sendJson = new JSONObject();
-			try {
-				sendJson.put("alert", jpushStr);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			String sendStr = sendJson.toString();
-			byte[] bytes = sendStr.getBytes("UTF-8");
+//			JSONObject sendJson = new JSONObject();
+//			try {
+//				sendJson.put("alert", jpushStr);
+//			} catch (JSONException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			String sendStr = sendJson.toString();
+			byte[] bytes = jpushStr.getBytes("UTF-8");
 			output.write(bytes);
 			output.close();
 			socket.close();

@@ -59,7 +59,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center|top"
-                    android:text="Wet Alert" />
+                    android:text="Registration Info" />
             </LinearLayout>
         </LinearLayout>
 
@@ -96,7 +96,7 @@
 
                 <Button
                     android:id="@+id/info_btn_DeviceChanging"
-                    style="?android:attr/textAppearanceLarge"
+                    style="?android:attr/textAppearanceMedium"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
@@ -125,16 +125,16 @@
                     style="?android:attr/textAppearanceMedium"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="序  列  号:" />
+                    android:layout_weight="0.8"
+                    android:gravity="right"
+                    android:text="序  列  号: " />
 
                 <EditText
                     android:id="@+id/info_textview_MacAddrss"
                     style="?android:attr/textAppearanceMedium"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.2"
+                    android:layout_weight="1.4"
                     android:gravity="left"
                     android:inputType="text" />
 
@@ -170,7 +170,7 @@
                     android:id="@+id/info_LinearLayout_02_03h_01v"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.8"
                     android:orientation="vertical" >
 
                     <TextView
@@ -178,31 +178,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="用  户  名 :" />
+                    android:gravity="right"
+                        android:text="用  户  名: " />
 
                     <TextView
                         style="?android:attr/textAppearanceMedium"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="绑定手机 :" />
+                    android:gravity="right"
+                        android:text="绑定手机: " />
 
                     <TextView
                         style="?android:attr/textAppearanceMedium"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="看护单位 :" />
+                    android:gravity="right"
+                        android:text="看护单位: " />
                 </LinearLayout>
-
+                
                 <LinearLayout
                     android:id="@+id/info_LinearLayout_02_03h_02v"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.2"
+                    android:layout_weight="0.1"
+                    android:orientation="vertical" >
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/info_LinearLayout_02_03h_03v"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.3"
                     android:orientation="vertical" >
 
                     <TextView
@@ -231,7 +240,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/info_LinearLayout_02_03h_03v"
+                    android:id="@+id/info_LinearLayout_02_03h_04v"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"

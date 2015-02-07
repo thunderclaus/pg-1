@@ -29,8 +29,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	static ImageView imBattery;
 	static SharedPreferences sp;
 	static Context context;
-
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

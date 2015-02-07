@@ -1,18 +1,15 @@
 package com.pku.pg;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.pku.pg.MyAdapter.ViewHolder;
-import com.pku.pg.RegisterUserThread.OnSucRegisterListener;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -22,8 +19,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,17 +26,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ScrollView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.pku.pg.MyAdapter.ViewHolder;
+import com.pku.pg.RegisterUserThread.OnSucRegisterListener;
 
 public class Info extends Activity implements OnClickListener {
 
@@ -131,7 +126,7 @@ public class Info extends Activity implements OnClickListener {
 		else mListItemNurses = new ArrayList<HashMap<String, String>>();
 		//nurseSer如果为空,新建填充,如果不为空,填入下一项.
 		
-		nurseAdapter = new MyAdapter(mListItemNurses,this,"看  护  人");
+		nurseAdapter = new MyAdapter(mListItemNurses,this,"看  护  人: ");
 		mListviewNurses.setAdapter(nurseAdapter);
 
 		mListviewNurses.setOnItemClickListener(new OnItemClickListener() {
@@ -191,7 +186,7 @@ public class Info extends Activity implements OnClickListener {
 		else mListItemRelatives = new ArrayList<HashMap<String, String>>();
 		
 	
-		relativeAdapter = new MyAdapter(mListItemRelatives,this,"亲     友");
+		relativeAdapter = new MyAdapter(mListItemRelatives,this,"亲       友: ");
 		mListviewRelatives.setAdapter(relativeAdapter);
 		mListviewRelatives.setOnItemClickListener(new OnItemClickListener() {
 
@@ -266,37 +261,41 @@ public class Info extends Activity implements OnClickListener {
 			// ======================================================================更换设备
 			// 按钮点击
 			// 弹出对话框
-			LayoutInflater inflater_DeviceChange = getLayoutInflater();
-			View layout_DeviceChange = inflater_DeviceChange.inflate(
-					R.layout.dialog_devicechange,
-					(ViewGroup) findViewById(R.id.dialog_DeviceChange));
 			
-			new AlertDialog.Builder(this)
-					.setTitle("警告")
-					.setView(layout_DeviceChange)
-					.setPositiveButton("确定",
-							new DialogInterface.OnClickListener() {
-
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// TODO Auto-generated method stub
-									// 保存进SharedPreferences
-									
-									MainActivity.sp.edit().putString("Mac", "")
-									.putString("userName", "")
-									.putString("userPhone", "")
-									.putString("geracomium", "").commit();
-									tv_userName.setText(null);
-									tv_userPhone.setText(null);
-									tv_userHospital.setText(null);
-									regUserMac.setText(null);
-									if(BtService.bluetoothManager!=null)
-										BtService.bluetoothManager.setConnectting(false);
-									MainActivity.sp.edit().putBoolean("checkFlag", false)
-									.putBoolean("checkSucFlag", false).commit();
-								}
-							}).setNegativeButton("取消", null).show();
+			testData();
+			
+			
+//			LayoutInflater inflater_DeviceChange = getLayoutInflater();
+//			View layout_DeviceChange = inflater_DeviceChange.inflate(
+//					R.layout.dialog_devicechange,
+//					(ViewGroup) findViewById(R.id.dialog_DeviceChange));
+//			
+//			new AlertDialog.Builder(this)
+//					.setTitle("警告")
+//					.setView(layout_DeviceChange)
+//					.setPositiveButton("确定",
+//							new DialogInterface.OnClickListener() {
+//
+//								@Override
+//								public void onClick(DialogInterface dialog,
+//										int which) {
+//									// TODO Auto-generated method stub
+//									// 保存进SharedPreferences
+//									
+//									MainActivity.sp.edit().putString("Mac", "")
+//									.putString("userName", "")
+//									.putString("userPhone", "")
+//									.putString("geracomium", "").commit();
+//									tv_userName.setText(null);
+//									tv_userPhone.setText(null);
+//									tv_userHospital.setText(null);
+//									regUserMac.setText(null);
+//									if(BtService.bluetoothManager!=null)
+//										BtService.bluetoothManager.setConnectting(false);
+//									MainActivity.sp.edit().putBoolean("checkFlag", false)
+//									.putBoolean("checkSucFlag", false).commit();
+//								}
+//							}).setNegativeButton("取消", null).show();
 
 			break;
 
@@ -324,7 +323,7 @@ public class Info extends Activity implements OnClickListener {
 									// 保存进SharedPreferences
 									JSONObject jsonObject = new JSONObject();
 									try {
-										jsonObject.put("ID", insertChar(regUserMac.getText().toString()));
+										jsonObject.put("ID", "8010"+regUserMac.getText().toString());
 										jsonObject.put("userName", regUserName.getText().toString());
 										jsonObject.put("userPhone", regUserPhone.getText().toString());
 										jsonObject.put("geracomium", regUserHospital.getText().toString());
@@ -424,8 +423,9 @@ public class Info extends Activity implements OnClickListener {
 			MainActivity.sp.edit().putBoolean("checkFlag", true).commit();
 			String inputID = regUserMac.getText().toString();
 			if(inputID.length()==12&&inputID.matches("\\w{12}")){
-				deviceID = insertChar(inputID);	
-				MainActivity.sp.edit().putString("deviceID", deviceID).commit();
+//				deviceID = insertChar(inputID);	
+				deviceID = "8010"+inputID;				
+
 				Intent intent = new Intent(infoContext,BtService.class);
 				Bundle bundle = new Bundle();
 				bundle.putString("deviceID", deviceID);
@@ -440,11 +440,15 @@ public class Info extends Activity implements OnClickListener {
 			}else Toast.makeText(this, "对不起，您输入的序列号格式有误，请重新输入", Toast.LENGTH_LONG).show();					
 			break;
 		case R.id.submit:
-			//注册用户
-			boolean checkSucFlag = MainActivity.sp.getBoolean("checkSucFlag", false);
-			if(checkSucFlag){
-//				String registerUserStr = MainActivity.sp.getString("registerUserStr", "registerUserStr");
-				String userStr = MainActivity.sp.getString("userStr", "userStr");
+			// 注册用户
+			boolean checkSucFlag = MainActivity.sp.getBoolean("checkSucFlag",
+					false);
+			if (checkSucFlag) {
+				// String registerUserStr =
+				// MainActivity.sp.getString("registerUserStr",
+				// "registerUserStr");
+				String userStr = MainActivity.sp
+						.getString("userStr", "userStr");
 				String newUserStr = null;
 				try {
 					JSONObject obj1 = new JSONObject(userStr);
@@ -455,94 +459,157 @@ public class Info extends Activity implements OnClickListener {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
-//				if(userStr!= "userStr"&&registerUserStr!= newUserStr){		
-					RegisterUserThread thread = new RegisterUserThread(newUserStr,MainActivity.sp);
-					thread.start();
-					thread.setOnSucRegisterListener(new OnSucRegisterListener(){
-						@Override
-						public void onSucRegister() {
-							// TODO Auto-generated method stub
-							//注册护工
-//							String registerNurseStr = MainActivity.sp.getString("registerNurseStr", "registerNurseStr");
-							JSONArray nurseArray = new JSONArray();
-							for(HashMap<String,String> map: mListItemNurses){
-								if(map.get("ItemCheckbox").equals("true")){
-									JSONObject obj = new JSONObject();
-									try {
-										obj.put("nurseName", map.get("ItemTitle"));
-										obj.put("nursePhone", map.get("ItemText"));
-										nurseArray.put(obj);
-									} catch (JSONException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								}
-							}
-							String newNurseStr = null;			
-							try {
-								JSONObject obj3 = new JSONObject();
-								deviceID = MainActivity.sp.getString("deviceID", "");
-								obj3.put("ID", deviceID);
-								obj3.put("nursesInfo", nurseArray);
-								JSONObject obj4 = new JSONObject();
-								obj4.put("nurse", obj3);
-								newNurseStr = obj4.toString();
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}			
-//							if(registerNurseStr!= newNurseStr){				
-								RegisterNurseThread registerNurseThread = new RegisterNurseThread(newNurseStr,MainActivity.sp);
-								registerNurseThread.start();
-//							}
-							
-							//注册亲属
-//							String registerRelativesStr = MainActivity.sp.getString("registerRelativesStr", "registerRelativesStr");
-							JSONArray relativeArray = new JSONArray();
-							for(HashMap<String,String> map: mListItemRelatives){
-								if(map.get("ItemCheckbox").equals("true")){
-									JSONObject obj = new JSONObject();
-									try {
-										obj.put("relativeName", map.get("ItemTitle"));
-										obj.put("relativePhone", map.get("ItemText"));
-										relativeArray.put(obj);
-									} catch (JSONException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								}
-							}
-							String newRelativeStr = null;			
-							try {
-								JSONObject obj3 = new JSONObject();
-								deviceID = MainActivity.sp.getString("deviceID", "");
-								obj3.put("ID", deviceID);
-								obj3.put("relativesInfo", relativeArray);
-								JSONObject obj4 = new JSONObject();
-								obj4.put("relative", obj3);
-								newRelativeStr = obj4.toString();
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}			
-//							if(registerRelativesStr!= newRelativeStr){				
-								RegisterRelativesThread registerRelativesThread = new RegisterRelativesThread(newRelativeStr,MainActivity.sp);
-								registerRelativesThread.start();
-//							}			
+				// if(userStr!= "userStr"&&registerUserStr!= newUserStr){
+				RegisterUserThread thread = new RegisterUserThread(newUserStr,
+						MainActivity.sp);
+				thread.start();
+				thread.setOnSucRegisterListener(new OnSucRegisterListener() {
+					@Override
+					public void onSucRegister() {
+						// TODO Auto-generated method stub
+						// 注册护工
+						// String registerNurseStr =
+						// MainActivity.sp.getString("registerNurseStr",
+						// "registerNurseStr");
+						JSONArray nurseArray = new JSONArray();
+						JSONArray nurseArrayPhoneList = new JSONArray();
+						for (HashMap<String, String> map : mListItemNurses) {
+							if (map.get("ItemCheckbox").equals("true")) {
+								JSONObject obj = new JSONObject();
 								
-							//注册成功后提示，注册为线程，此时做判断时还没有把标识位置为true，所以没有提示	
-//							if(registerNurseThread.getRegNurseFlag()&&registerRelativesThread.getRegRelativesFlag())
-//								MainActivity.SendMessage(MainActivity.handler, 12);
-						}						
-					});
-//				}								
-			}else Toast.makeText(this, "对不起，您输入的序列号需验证，验证成功后方可注册", Toast.LENGTH_LONG).show();
-			
+								try {
+									obj.put("nurseName", map.get("ItemTitle"));
+									obj.put("nursePhone", map.get("ItemText"));									
+									nurseArray.put(obj);
+									nurseArrayPhoneList.put(map.get("ItemText"));
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}
+						String newNurseStr = null;
+						try {
+							JSONObject obj3 = new JSONObject();
+							deviceID = MainActivity.sp
+									.getString("deviceID", "");
+							obj3.put("ID", deviceID);
+							obj3.put("nursesInfo", nurseArray);
+							JSONObject obj4 = new JSONObject();
+							obj4.put("nurse", obj3);
+							newNurseStr = obj4.toString();
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// if(registerNurseStr!= newNurseStr){
+						RegisterNurseThread registerNurseThread = new RegisterNurseThread(
+								newNurseStr, MainActivity.sp);
+						registerNurseThread.start();
+						// }
+
+						// 注册亲属
+						// String registerRelativesStr =
+						// MainActivity.sp.getString("registerRelativesStr",
+						// "registerRelativesStr");
+						JSONArray relativeArray = new JSONArray();
+						for (HashMap<String, String> map : mListItemRelatives) {
+							if (map.get("ItemCheckbox").equals("true")) {
+								JSONObject obj = new JSONObject();								
+								try {
+									obj.put("relativeName",
+											map.get("ItemTitle"));
+									obj.put("relativePhone",
+											map.get("ItemText"));
+									relativeArray.put(obj);
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}
+						String newRelativeStr = null;
+						try {
+							JSONObject obj3 = new JSONObject();
+							deviceID = MainActivity.sp
+									.getString("deviceID", "");
+							obj3.put("ID", deviceID);
+							obj3.put("relativesInfo", relativeArray);
+							JSONObject obj4 = new JSONObject();
+							obj4.put("relative", obj3);
+							newRelativeStr = obj4.toString();
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// if(registerRelativesStr!= newRelativeStr){
+						RegisterRelativesThread registerRelativesThread = new RegisterRelativesThread(
+								newRelativeStr, MainActivity.sp);
+						registerRelativesThread.start();
+						// }
+
+						// 注册成功后提示，注册为线程，此时做判断时还没有把标识位置为true，所以没有提示
+						// if(registerNurseThread.getRegNurseFlag()&&registerRelativesThread.getRegRelativesFlag())
+						// MainActivity.SendMessage(MainActivity.handler, 12);
+						
+						//将电话号码保存到SP中
+						MainActivity.sp.edit().putString("checkedNursePhone", nurseArrayPhoneList.toString())
+						.commit();
+						
+					}
+				});
+				// }
+			} else
+				Toast.makeText(this, "对不起，您输入的序列号需验证，验证成功后方可注册",
+						Toast.LENGTH_LONG).show();
+
 			break;
 		default:
 			break;
 		}
 	}
+	
+	//以下为测试数据-------------------------------------
+	private void testData() {
+		// TODO Auto-generated method stub
+				String userTel = "17801090898";
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				 String sysTime = format.format(System.currentTimeMillis());
+								String alertTime = sysTime;
+				int alertState = 0;
+				int type = 1;
+				String patientName = MainActivity.sp.getString("userName", "");
+				String patientPhone=MainActivity.sp.getString("userPhone", "");
+				String id = MainActivity.sp.getString("deviceID", "");
+				List<String> nurseCheckedList = analysisList(Info.mListItemNurses);
+				JSONArray nursePhone = new JSONArray();
+				for(int i = 0; i < nurseCheckedList.size(); i++) {
+					nursePhone.put(nurseCheckedList.get(i));
+				}
+				// 将数据传给报警线程
+				UploadAlertThread thread = new UploadAlertThread(id, type,
+						alertTime, userTel, alertState, patientName,
+						nursePhone, patientPhone);
+			    
+				thread.start();
+			
+		
+	}
+
+	private List<String> analysisList(ArrayList<HashMap<String, String>> list) {
+		if(list!=null) {
+			List<String> telList = new ArrayList<String>();
+			for (HashMap<String, String> map : list) {
+				if (map.get("ItemCheckbox").equals("true"))
+					telList.add(map.get("ItemText"));
+			}
+			Log.e("BluetoothManager", "telList:" + telList.toString());
+			return telList;
+		}
+		return null;
+	}
+	//以上为测试数据------------------------------------------------------
+
 	private String insertChar(String str){
 		String newStr;
 		StringBuffer sb = new StringBuffer(str);
