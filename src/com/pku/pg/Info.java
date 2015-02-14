@@ -262,40 +262,40 @@ public class Info extends Activity implements OnClickListener {
 			// 按钮点击
 			// 弹出对话框
 			
-			testData();
+//			testData();
 			
 			
-//			LayoutInflater inflater_DeviceChange = getLayoutInflater();
-//			View layout_DeviceChange = inflater_DeviceChange.inflate(
-//					R.layout.dialog_devicechange,
-//					(ViewGroup) findViewById(R.id.dialog_DeviceChange));
-//			
-//			new AlertDialog.Builder(this)
-//					.setTitle("警告")
-//					.setView(layout_DeviceChange)
-//					.setPositiveButton("确定",
-//							new DialogInterface.OnClickListener() {
-//
-//								@Override
-//								public void onClick(DialogInterface dialog,
-//										int which) {
-//									// TODO Auto-generated method stub
-//									// 保存进SharedPreferences
-//									
-//									MainActivity.sp.edit().putString("Mac", "")
-//									.putString("userName", "")
-//									.putString("userPhone", "")
-//									.putString("geracomium", "").commit();
-//									tv_userName.setText(null);
-//									tv_userPhone.setText(null);
-//									tv_userHospital.setText(null);
-//									regUserMac.setText(null);
-//									if(BtService.bluetoothManager!=null)
-//										BtService.bluetoothManager.setConnectting(false);
-//									MainActivity.sp.edit().putBoolean("checkFlag", false)
-//									.putBoolean("checkSucFlag", false).commit();
-//								}
-//							}).setNegativeButton("取消", null).show();
+			LayoutInflater inflater_DeviceChange = getLayoutInflater();
+			View layout_DeviceChange = inflater_DeviceChange.inflate(
+					R.layout.dialog_devicechange,
+					(ViewGroup) findViewById(R.id.dialog_DeviceChange));
+			
+			new AlertDialog.Builder(this)
+					.setTitle("警告")
+					.setView(layout_DeviceChange)
+					.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO Auto-generated method stub
+									// 保存进SharedPreferences
+									
+									MainActivity.sp.edit().putString("Mac", "")
+									.putString("userName", "")
+									.putString("userPhone", "")
+									.putString("geracomium", "").commit();
+									tv_userName.setText(null);
+									tv_userPhone.setText(null);
+									tv_userHospital.setText(null);
+									regUserMac.setText(null);
+									if(BtService.bluetoothManager!=null)
+										BtService.bluetoothManager.setConnectting(false);
+									MainActivity.sp.edit().putBoolean("checkFlag", false)
+									.putBoolean("checkSucFlag", false).commit();
+								}
+							}).setNegativeButton("取消", null).show();
 
 			break;
 
@@ -556,8 +556,12 @@ public class Info extends Activity implements OnClickListener {
 						MainActivity.sp.edit().putString("checkedNursePhone", nurseArrayPhoneList.toString())
 						.commit();
 						
+						
+						
 					}
+					
 				});
+				Toast.makeText(this, "注册成功",Toast.LENGTH_SHORT).show();
 				// }
 			} else
 				Toast.makeText(this, "对不起，您输入的序列号需验证，验证成功后方可注册",
@@ -570,44 +574,44 @@ public class Info extends Activity implements OnClickListener {
 	}
 	
 	//以下为测试数据-------------------------------------
-	private void testData() {
-		// TODO Auto-generated method stub
-				String userTel = "17801090898";
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				 String sysTime = format.format(System.currentTimeMillis());
-								String alertTime = sysTime;
-				int alertState = 0;
-				int type = 1;
-				String patientName = MainActivity.sp.getString("userName", "");
-				String patientPhone=MainActivity.sp.getString("userPhone", "");
-				String id = MainActivity.sp.getString("deviceID", "");
-				List<String> nurseCheckedList = analysisList(Info.mListItemNurses);
-				JSONArray nursePhone = new JSONArray();
-				for(int i = 0; i < nurseCheckedList.size(); i++) {
-					nursePhone.put(nurseCheckedList.get(i));
-				}
-				// 将数据传给报警线程
-				UploadAlertThread thread = new UploadAlertThread(id, type,
-						alertTime, userTel, alertState, patientName,
-						nursePhone, patientPhone);
-			    
-				thread.start();
-			
-		
-	}
-
-	private List<String> analysisList(ArrayList<HashMap<String, String>> list) {
-		if(list!=null) {
-			List<String> telList = new ArrayList<String>();
-			for (HashMap<String, String> map : list) {
-				if (map.get("ItemCheckbox").equals("true"))
-					telList.add(map.get("ItemText"));
-			}
-			Log.e("BluetoothManager", "telList:" + telList.toString());
-			return telList;
-		}
-		return null;
-	}
+//	private void testData() {
+//		// TODO Auto-generated method stub
+//				String userTel = "15611111111";
+//				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//				 String sysTime = format.format(System.currentTimeMillis());
+//								String alertTime = sysTime;
+//				int alertState = 0;
+//				int type = 1;
+//				String patientName = MainActivity.sp.getString("userName", "");
+//				String patientPhone=MainActivity.sp.getString("userPhone", "");
+//				String id = MainActivity.sp.getString("deviceID", "");
+//				List<String> nurseCheckedList = analysisList(Info.mListItemNurses);
+//				JSONArray nursePhone = new JSONArray();
+//				for(int i = 0; i < nurseCheckedList.size(); i++) {
+//					nursePhone.put(nurseCheckedList.get(i));
+//				}
+//				// 将数据传给报警线程
+//				UploadAlertThread thread = new UploadAlertThread(id, type,
+//						alertTime, userTel, alertState, patientName,
+//						nursePhone, patientPhone);
+//			    
+//				thread.start();
+//			
+//		
+//	}
+//
+//	private List<String> analysisList(ArrayList<HashMap<String, String>> list) {
+//		if(list!=null) {
+//			List<String> telList = new ArrayList<String>();
+//			for (HashMap<String, String> map : list) {
+//				if (map.get("ItemCheckbox").equals("true"))
+//					telList.add(map.get("ItemText"));
+//			}
+//			Log.e("BluetoothManager", "telList:" + telList.toString());
+//			return telList;
+//		}
+//		return null;
+//	}
 	//以上为测试数据------------------------------------------------------
 
 	private String insertChar(String str){
